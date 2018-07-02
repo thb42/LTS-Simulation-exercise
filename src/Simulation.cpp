@@ -1,6 +1,7 @@
 #include "Simulation.h"
 
 template class Simulation<std::geometric_distribution<int>, unsigned int>;
+template class Simulation<std::exponential_distribution<double>, double>;
 
 template<typename Distribution, typename SimulationTime> 
 Simulation<Distribution, SimulationTime>::Simulation()
@@ -10,8 +11,8 @@ Simulation<Distribution, SimulationTime>::Simulation()
 template<typename Distribution, typename SimulationTime> 
 Simulation<Distribution, SimulationTime>::Simulation(double a_Araival, double a_Finished, Server& s) :
 time(0), gen(),
-distAraival(std::geometric_distribution<int>(a_Araival)), 
-distFinished(std::geometric_distribution<int>(a_Finished)),
+distAraival(Distribution(a_Araival)), 
+distFinished(Distribution(a_Finished)),
 event_list(std::list<event<SimulationTime>>()), 
 server(Server(s)), throughput(0.0),  mean_jobs(0.0)
 {
