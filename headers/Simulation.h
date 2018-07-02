@@ -17,14 +17,14 @@ struct event {
 	event(ST t, type et) : time(t), event_type(et) {}
 };
 
-//template<typename Distribution>
+template<typename Distribution>
 class Simulation
 {
 private:
 	unsigned int time;
 	std::mt19937 gen;
-	std::geometric_distribution<int> distAraival;
-	std::geometric_distribution<int> distFinished;
+	Distribution distAraival;
+	Distribution distFinished;
 	std::list<event<unsigned int>> event_list;
 	Server server;
 
