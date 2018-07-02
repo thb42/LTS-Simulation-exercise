@@ -22,7 +22,6 @@ int main()
 	std::cout<< "Durchsatz: " << sim.getThroughput()/sim_steps <<std::endl;
 	std::cout << "Mittlere Auftragsanzahl: " << sim.getMeanJobs()/sim_steps << std::endl;
 
-	//system("pause");
     return 0;
 }
 
