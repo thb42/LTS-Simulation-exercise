@@ -6,23 +6,13 @@ Simulation<unsigned int, Distribution>::Simulation()
 }*/
 
 //template<typename Distribution> 
-Simulation::Simulation(double a_Araival, double a_Finished, Server& s)/* :
-time(),
-gen(),
-distAraival(Distribution(a_Araival)), 
-distFinished(Distribution(a_Finished)),
+Simulation::Simulation(double a_Araival, double a_Finished, Server& s) :
+time(0), gen(),
+distAraival(std::geometric_distribution<int>(a_Araival)), 
+distFinished(std::geometric_distribution<int>(a_Finished)),
 event_list(std::list<event<unsigned int>>()), 
-server(s), 
-throughput(0.0),  
-mean_jobs(0.0)*/
+server(Server(s)), throughput(0.0),  mean_jobs(0.0)
 {
-	time = 0;
-	distAraival = std::geometric_distribution<int>(a_Araival);
-	distFinished = std::geometric_distribution<int>(a_Finished);
-	event_list = std::list<event<unsigned int>>();
-	server = Server(s);
-	throughput = 0.0;
-	mean_jobs = 0.0;
 	std::random_device rd;
 	gen.seed(rd());
 }
