@@ -26,21 +26,23 @@ Simulation<Distribution, SimulationTime>::~Simulation()
 
 template<typename Distribution, typename SimulationTime>
 void Simulation<Distribution, SimulationTime>::step() {
+	// if we have simulation events we'll proceed them
 	if (!event_list.empty()) {
 		std::list<event<SimulationTime>> local_list;
 		auto event_time = event_list.front().time;
 		auto position = event_list.cbegin();
 
-		// remove first elements with same simulationtime
+		// select all events with same simulationtime like the first element in list
 		for (position;  position != event_list.cend() && event_time == position->time; position++) {
-			//auto e = event_list.front();
+			// save next events for further usage
 			local_list.push_front(*position);
 		}
+		// remove first elements with same simulationtime
 		event_list.erase(event_list.cbegin(), position);
-		//event_list.splice(--position, local_list);
 
-		//todo local_eventlist nach typ sortieren, finish zuerst
+		// sort so finish events will be first in list
 		local_list.sort([](const event<SimulationTime> E1, const event<SimulationTime> E2) { return E1.event_type < E2.event_type; });
+		// and we will proceed them first
 		for(auto iter = local_list.cbegin(); iter != local_list.cend(); ++iter) {
 			switch (iter->event_type) {
 			case araival:
@@ -72,8 +74,10 @@ void Simulation<Distribution, SimulationTime>::step() {
 			}
 		}
 	}
+	// else we have no events in event list we'll generate a araival events
 	else {
 		addEvent(event<SimulationTime>(time + 1 + distAraival(gen), araival));
+		// and if we have jobs waiting we'll generate a finish event
 		if (server.getWait() > 0) {
 			addEvent(event<SimulationTime>(time + 1 + distFinished(gen), finished));
 		}
