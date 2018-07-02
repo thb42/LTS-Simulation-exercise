@@ -1,2 +1,7 @@
+Makefile
 repos/*
+bin/*
+CMakeFiles/*
+src/CMakeFiles/*
+CMakeCache.txt
 *.7z
