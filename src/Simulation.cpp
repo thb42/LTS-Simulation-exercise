@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Simulation.h"
 
 /*template<typename unsigned int, class Distribution> 

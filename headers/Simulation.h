@@ -1,5 +1,6 @@
-#ifndef SIMULATIO_H
-#define SIMULATIO_H
+#ifndef SIMULATION_H
+#define SIMULATION_H
+
 #include <random>
 #include <typeinfo>
 #include "Server.h"
