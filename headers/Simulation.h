@@ -17,15 +17,15 @@ struct event {
 	event(ST t, type et) : time(t), event_type(et) {}
 };
 
-template<typename Distribution>
+template<typename Distribution, typename SimulationTime>
 class Simulation
 {
 private:
-	unsigned int time;
+	SimulationTime time;
 	std::mt19937 gen;
 	Distribution distAraival;
 	Distribution distFinished;
-	std::list<event<unsigned int>> event_list;
+	std::list<event<SimulationTime>> event_list;
 	Server server;
 
 	double throughput;
@@ -37,7 +37,7 @@ public:
 	Simulation(double a_Araival, double a_Finished, Server& s);
 
 	void addServer(Server s);
-	void addEvent(event<unsigned int> e);
+	void addEvent(event<SimulationTime> e);
 	void step();
 
 	double getThroughput() { return throughput; }

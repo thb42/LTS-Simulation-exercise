@@ -1,33 +1,33 @@
 #include "Simulation.h"
 
-template class Simulation<std::geometric_distribution<int>>;
+template class Simulation<std::geometric_distribution<int>, unsigned int>;
 
-template<typename Distribution> 
-Simulation<Distribution>::Simulation()
+template<typename Distribution, typename SimulationTime> 
+Simulation<Distribution, SimulationTime>::Simulation()
 {
 }
 
-template<typename Distribution> 
-Simulation<Distribution>::Simulation(double a_Araival, double a_Finished, Server& s) :
+template<typename Distribution, typename SimulationTime> 
+Simulation<Distribution, SimulationTime>::Simulation(double a_Araival, double a_Finished, Server& s) :
 time(0), gen(),
 distAraival(std::geometric_distribution<int>(a_Araival)), 
 distFinished(std::geometric_distribution<int>(a_Finished)),
-event_list(std::list<event<unsigned int>>()), 
+event_list(std::list<event<SimulationTime>>()), 
 server(Server(s)), throughput(0.0),  mean_jobs(0.0)
 {
 	std::random_device rd;
 	gen.seed(rd());
 }
 
-template<typename Distribution>
-Simulation<Distribution>::~Simulation()
+template<typename Distribution, typename SimulationTime>
+Simulation<Distribution, SimulationTime>::~Simulation()
 {
 }
 
-template<typename Distribution>
-void Simulation<Distribution>::step() {
+template<typename Distribution, typename SimulationTime>
+void Simulation<Distribution, SimulationTime>::step() {
 	if (!event_list.empty()) {
-		std::list<event<unsigned int>> local_list;
+		std::list<event<SimulationTime>> local_list;
 		auto event_time = event_list.front().time;
 		auto position = event_list.cbegin();
 
@@ -40,7 +40,7 @@ void Simulation<Distribution>::step() {
 		//event_list.splice(--position, local_list);
 
 		//todo local_eventlist nach typ sortieren, finish zuerst
-		local_list.sort([](const event<unsigned int> E1, const event<unsigned int> E2) { return E1.event_type < E2.event_type; });
+		local_list.sort([](const event<SimulationTime> E1, const event<SimulationTime> E2) { return E1.event_type < E2.event_type; });
 		for(auto iter = local_list.cbegin(); iter != local_list.cend(); ++iter) {
 			switch (iter->event_type) {
 			case araival:
@@ -51,9 +51,9 @@ void Simulation<Distribution>::step() {
 				for (auto iter = event_list.cbegin(); iter != event_list.cend(); iter++) {
 					has_finish = has_finish || (iter->event_type == finished);
 				}
-				addEvent(event<unsigned int>(time + 1 + distAraival(gen), araival));
+				addEvent(event<SimulationTime>(time + 1 + distAraival(gen), araival));
 				if (!has_finish) {
-					addEvent(event<unsigned int>(time + 1 + distFinished(gen), finished));
+					addEvent(event<SimulationTime>(time + 1 + distFinished(gen), finished));
 				}}
 				break;
 
@@ -63,7 +63,7 @@ void Simulation<Distribution>::step() {
 				server.finish();
 				time = event_time;
 				if (server.getWait() > 0) {
-					addEvent(event<unsigned int>(time + 1 + distFinished(gen), finished));
+					addEvent(event<SimulationTime>(time + 1 + distFinished(gen), finished));
 				}
 				break;
 
@@ -73,20 +73,20 @@ void Simulation<Distribution>::step() {
 		}
 	}
 	else {
-		addEvent(event<unsigned int>(time + 1 + distAraival(gen), araival));
+		addEvent(event<SimulationTime>(time + 1 + distAraival(gen), araival));
 		if (server.getWait() > 0) {
-			addEvent(event<unsigned int>(time + 1 + distFinished(gen), finished));
+			addEvent(event<SimulationTime>(time + 1 + distFinished(gen), finished));
 		}
 	}
-	event_list.sort([](const event<unsigned int> E1, const event<unsigned int> E2) { return E1.time < E2.time; });
+	event_list.sort([](const event<SimulationTime> E1, const event<SimulationTime> E2) { return E1.time < E2.time; });
 }
 
-template<typename Distribution>
-void Simulation<Distribution>::addServer(Server s) { 
+template<typename Distribution, typename SimulationTime>
+void Simulation<Distribution, SimulationTime>::addServer(Server s) { 
 	server = s; 
 }
 
-template<typename  Distribution>
-void Simulation<Distribution>::addEvent(event<unsigned int> e) { 
+template<typename  Distribution, typename SimulationTime>
+void Simulation<Distribution, SimulationTime>::addEvent(event<SimulationTime> e) { 
 	event_list.push_back(e); 
 }
