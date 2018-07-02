@@ -21,6 +21,8 @@ int main()
 		}
 
 	}
+
+	std::cout << "Simulation<std::exponential_distribution<double>, double>" << std::endl;
 	std::cout << "Durchsatz: " << sim.getThroughput() / sim_steps << std::endl;
 	std::cout << "Mittlere Auftragsanzahl: " << sim.getMeanJobs() / sim_steps << std::endl;
 
