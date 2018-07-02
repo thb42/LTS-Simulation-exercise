@@ -33,7 +33,7 @@ private:
 
 
 public:
-	//Simulation();
+	Simulation();
 	Simulation(double a_Araival, double a_Finished, Server& s);
 
 	void addServer(Server s);
@@ -42,6 +42,6 @@ public:
 
 	double getThroughput() { return throughput; }
 	double getMeanJobs() { return mean_jobs; }
-	//~Simulation();
+	~Simulation();
 };
 #endif

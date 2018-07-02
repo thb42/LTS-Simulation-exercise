@@ -1,9 +1,10 @@
 #include "Simulation.h"
 
-/*template<typename unsigned int, class Distribution> 
-Simulation<unsigned int, Distribution>::Simulation()
+//template<typename unsigned int, class Distribution> 
+//Simulation<unsigned int, Distribution>::Simulation()
+Simulation::Simulation()
 {
-}*/
+}
 
 //template<typename Distribution> 
 Simulation::Simulation(double a_Araival, double a_Finished, Server& s) :
@@ -17,10 +18,11 @@ server(Server(s)), throughput(0.0),  mean_jobs(0.0)
 	gen.seed(rd());
 }
 
-/*template<typename unsigned int, class Distribution>
-Simulation<unsigned int, Distribution>::~Simulation()
+//template<typename unsigned int, class Distribution>
+//Simulation<unsigned int, Distribution>::~Simulation()
+Simulation::~Simulation()
 {
-}*/
+}
 
 //template<typename Distribution>
 void Simulation::step() {
